@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="access_token" db_schema_name="'AAA', 'CONFIG'" package="biop.aaa">
+	<documentation>
+			Interface for generationg refresh_token of a SYSTEM user (e.g. a company)
+	</documentation>
+	<method name="issue_access_token" transactional="true" db_schema_name="AAA" http_method="POST">
+		<documentation>
+			login:
+			Inputs
+				refresh_token containing JWT token (refresh)
+			Outputs
+				access_token: containing the signed JWT token (access)
+
+			Description:
+				Checks validity of the refresh token and issues fresh access token
+				1. Liveness
+				2. Validy of the user principal
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<input namespace="http://composites.biop.com" name="refresh_token"/>
+		<output namespace="http://composites.biop.com" name="auth_token"/>
+	</method>
+	<method name="switch_org_id" transactional="false" db_schema_name="AAA" http_method="GET">
+		<documentation>
+			login:
+			Inputs
+				subscriber_org_id (mandatory), org_id
+			Outputs
+				access_token: containing the signed JWT token (access), with
+				subscriber_org_id and org_id present in the token body.
+				subscriber_org_id represents the subscriber with which this user
+				will work and the org_id represents company within the subscriber's
+				network for which the user will either read or write data.
+
+				If both org_id's are same, it implies that the user belongs to the
+				subscriber organization itself and will access data accordingly.
+
+				If the two org_id's are different it means that the user belongs to
+				the partner company in the network and will access data accordingly.
+
+			Description:
+				Checks validity of the access token and issues modified access token
+				1. Validates org_id
+				2. Validates access of bearer of token on org_id
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="subscriber_org_id" mandatory="true"/>
+		<query_param namespace="http://primitives.biop.com" name="org_id"/>
+		<output namespace="http://composites.biop.com" name="auth_token"/>
+	</method>
+</ns:interface>

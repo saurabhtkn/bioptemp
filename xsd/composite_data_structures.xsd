@@ -1,0 +1,714 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://composites.biop.com" xmlns:ns="http://composites.biop.com" xmlns:ns1="http://primitives.biop.com">
+
+	<xsd:import namespace="http://primitives.biop.com" schemaLocation="primitive_data_structures.xsd"/>
+
+	<xsd:group name="address_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="address_line_1" type="ns1:address_line_type"/>
+			<xsd:element name="address_line_2" type="ns1:address_line_type" minOccurs="0"/>
+			<xsd:element name="city" type="ns1:ref_code_type"/>
+			<xsd:element name="state" type="ns1:ref_code_type" minOccurs="0"/>
+			<xsd:element name="cntry" type="ns1:ref_code_type" minOccurs="0"/>
+			<xsd:element name="zip_code" type="ns1:zip_code_type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:complexType name="address_type">
+		<xsd:group ref="ns:address_elements"/>
+	</xsd:complexType>
+
+	<xsd:group name="company_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="org_name" type="ns1:org_name_type"/>
+			<xsd:element name="org_id" type="ns1:org_id_type" minOccurs="0"/>
+			<xsd:group ref="ns:address_elements"/>
+			<xsd:element name="contact_phone_number" type="ns1:cell_number_type"/>
+			<xsd:element name="contact_email_id" type="ns1:email_id_type"/>
+			<xsd:element name="version" type="xsd:long"/>
+			<xsd:element name="deleted" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="is_subscriber" type="xsd:boolean" minOccurs="1"/>
+			<xsd:element name="pan" type="ns1:pan_type" minOccurs="0"/>
+			<xsd:element name="tan" type="ns1:tan_id_type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:group name="tax_detail_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+			<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="org_id" type="ns1:org_id_type" minOccurs="0"/>
+			<xsd:element name="tax_identity_type" type="ns1:tax_identity_type_type"/>
+			<xsd:element name="tax_identifier" type="ns1:tax_identifier_type"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="company_tax_dtls_type">
+		<xsd:group ref="ns:tax_detail_elements"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="company_type">
+		<xsd:sequence>
+			<xsd:group ref="ns:company_elements" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="company_tax_dtls" type="ns:company_tax_dtls_type" minOccurs="0" maxOccurs="2"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="companies_type">
+		<xsd:group ref="ns:company_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="company" type="ns:company_type"/>
+	<xsd:element name="companies" type="ns:companies_type"/>
+
+	<xsd:complexType name="subscriber_activation_req_type">
+		<xsd:sequence>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="version" type="xsd:long"/>
+			<xsd:element name="override" type="xsd:boolean"/>
+			<xsd:element name="public_key" type="ns1:public_key_type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="subscriber_activation_req" type="ns:subscriber_activation_req_type"/>
+
+	<xsd:complexType name="subscriber_activation_dtls_type">
+		<xsd:sequence>
+			<xsd:element name="public_key" type="ns1:public_key_type" minOccurs="0"/>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="org_name" type="ns1:org_name_type"/>
+			<xsd:element name="proposed_key_start_date" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="key_start_date" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="key_expiry_date" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="version" type="xsd:long"/>
+			<xsd:element name="is_subscriber_activated" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="is_subscriber" type="xsd:boolean"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="subscriber_activation_dtls" type="ns:subscriber_activation_dtls_type"/>
+
+	<xsd:group name="user_profile_master_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="user_type" type="ns1:user_type_type"/>
+			<xsd:element name="user_principal" type="ns1:user_principal_type"/>
+			<xsd:element name="user_name" type="ns1:user_name_type"/>
+			<xsd:element name="system_user_type" type="ns1:system_user_type_type" minOccurs="0"/>
+			<xsd:element name="contact_email_id" type="ns1:email_id_type"/>
+			<xsd:element name="deleted" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="version" type="xsd:long" minOccurs="0"/>
+			<xsd:element name="id" type="ns1:id_type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="user_profile_master_type">
+		<xsd:group ref="ns:user_profile_master_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="user_profile_masters_type">
+		<xsd:group ref="ns:user_profile_master_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="user_profile_master" type="ns:user_profile_master_type"/>
+	<xsd:element name="user_profile_masters" type="ns:user_profile_masters_type"/>
+
+
+	<xsd:group name="user_profile_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="service_provider_id" type="ns1:service_provider_id_type" minOccurs="0"/>
+			<xsd:element name="user_name" type="ns1:user_name_type"/>
+			<xsd:element name="email_id" type="ns1:email_id_type"/>
+			<xsd:group ref="ns:address_elements"/>
+			<xsd:element name="cell_number" type="ns1:cell_number_type"/>
+			<xsd:element name="aadhar_number" type="ns1:aadhar_number_type" minOccurs="0"/>
+			<xsd:element name="voter_id" type="ns1:voter_id_type" minOccurs="0"/>
+			<xsd:element name="pan" type="ns1:pan_type" minOccurs="0"/>
+			<xsd:element name="deleted" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="version" type="xsd:long"/>
+			<xsd:element name="user_profile_id" type="ns1:id_type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="user_profile_type">
+		<xsd:group ref="ns:user_profile_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="user_profiles_type">
+		<xsd:group ref="ns:user_profile_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="user_profile" type="ns:user_profile_type"/>
+	<xsd:element name="user_profiles" type="ns:user_profiles_type"/>
+
+	<xsd:group name="user_company_relation_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="email_id" type="ns1:email_id_type"/>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="version" type="xsd:long" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="user_company_relation_type">
+		<xsd:group ref="ns:user_company_relation_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="user_company_relations_type">
+		<xsd:group ref="ns:user_company_relation_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="user_company_relation" type="ns:user_company_relation_type"/>
+	<xsd:element name="user_company_relations" type="ns:user_company_relations_type"/>
+
+	<xsd:group name="user_company_relation_internal_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="user_principal" type="ns1:user_principal_type"/>
+			<xsd:element name="user_type" type="ns1:user_type_type"/>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="version" type="xsd:long"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="user_company_relation_internal_type">
+		<xsd:group ref="ns:user_company_relation_internal_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="user_company_relations_internal_type">
+		<xsd:group ref="ns:user_company_relation_internal_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="user_company_internal_relation" type="ns:user_company_relation_internal_type"/>
+	<xsd:element name="user_company_internal_relations" type="ns:user_company_relations_internal_type"/>
+
+	<xsd:group name="user_related_company_details_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="org_name" type="ns1:org_name_type"/>
+			<xsd:element name="address_line_1" type="ns1:address_line_type"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="user_related_company_details_type">
+		<xsd:group ref="ns:user_related_company_details_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="user_related_companies_details_type">
+		<xsd:group ref="ns:user_related_company_details_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="user_related_company_details" type="ns:user_related_company_details_type"/>
+	<xsd:element name="user_related_companies_details" type="ns:user_related_companies_details_type"/>
+
+	<xsd:group name="user_company_relation_with_email_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="email_id" type="ns1:email_id_type"/>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="org_name" type="ns1:org_name_type"/>
+			<xsd:element name="version" type="xsd:long"/>
+			<xsd:element name="address_line_1" type="ns1:address_line_type"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="user_company_relation_with_email_type">
+		<xsd:group ref="ns:user_company_relation_with_email_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="user_company_relations_with_email_type">
+		<xsd:group ref="ns:user_company_relation_with_email_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="user_company_relation_with_email" type="ns:user_company_relation_with_email_type"/>
+	<xsd:element name="user_company_relations_with_email" type="ns:user_company_relations_with_email_type"/>
+
+	<xsd:complexType name="user_roles_type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="email_id" type="ns1:email_id_type"/>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="role" type="ns1:ref_code_type" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="user_profile_version" type="xsd:long"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="user_roles" type="ns:user_roles_type"/>
+
+	<xsd:complexType name="status_type">
+		<xsd:sequence>
+			<xsd:element name="outcome" type="xsd:boolean"/>
+			<xsd:element name="message" type="ns1:status_message_type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="status" type="ns:status_type"/>
+
+	<xsd:complexType name="NV_set_type">
+		<xsd:sequence maxOccurs="unbounded">
+			<xsd:element name="name" type="xsd:token"/>
+			<xsd:element name="value" type="xsd:token"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="NV_collection_type">
+		<xsd:sequence>
+			<xsd:element name="NV_set" type="ns:NV_set_type"/>
+		</xsd:sequence>
+	</xsd:complexType >
+
+	<xsd:element name="NV_collection" type="ns:NV_collection_type"/>
+
+	<xsd:group name="partner_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="parent_org_id" type="ns1:org_id_type"/>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="partner_relationship_type" type="ns1:partner_relationship_type_type"/>
+			<xsd:element name="version" type="xsd:long"/>
+			<xsd:element name="org_name" type="ns1:org_name_type" minOccurs="0"/>
+			<xsd:element name="city" type="ns1:ref_code_type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="partner_type">
+		<xsd:group ref="ns:partner_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="partners_type">
+		<xsd:group ref="ns:partner_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="partner" type="ns:partner_type"/>
+
+	<xsd:element name="partners" type="ns:partners_type"/>
+
+	<xsd:complexType name="credentials_type">
+		<xsd:sequence>
+			<xsd:element name="email_id" type="ns1:email_id_type"/>
+			<xsd:element name="pw" type="ns1:pw_type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="credentials" type="ns:credentials_type"/>
+
+	<xsd:complexType name="user_session_type">
+		<xsd:sequence>
+			<xsd:element name="session_id" type="ns1:session_id_type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="user_session" type="ns:user_session_type"/>
+
+	<xsd:complexType name="system_user_credentials_type">
+		<xsd:sequence>
+			<xsd:element name="session_id" type="ns1:session_id_type"/>
+			<xsd:element name="user_principal" type="ns1:user_principal_type"/>
+			<xsd:element name="otp" type="ns1:otp_type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="system_user_credentials" type="ns:system_user_credentials_type"/>
+
+	<xsd:complexType name="token_type">
+		<xsd:sequence>
+			<xsd:element name="jwt_token" type="xsd:token"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="auth_token" type="ns:token_type"/>
+	<xsd:element name="refresh_token" type="ns:token_type"/>
+
+	<xsd:group name="license_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="license_id" type="ns1:license_id_type"/>
+			<xsd:element name="org_id" type="ns1:org_id_type"/>
+			<xsd:element name="expiry_date" type="xsd:date"/>
+			<xsd:element name="deleted" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="version" type="xsd:long" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="license_type">
+		<xsd:group ref="ns:license_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="licenses_type">
+		<xsd:group ref="ns:license_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="license" type="ns:license_type"/>
+	<xsd:element name="licenses" type="ns:licenses_type"/>
+
+	<xsd:group name="user_id_elements">
+		<xsd:sequence>
+			<xsd:element name="user_principal" type="ns1:user_principal_type"/>
+			<xsd:element name="user_type" type="ns1:user_type_type"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="user_id_type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:group ref="ns:user_id_elements"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="xchange_user_id_type">
+		<xsd:complexContent>
+			<xsd:extension base="ns:user_id_type"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="xchange_user_id" type="ns:xchange_user_id_type"/>
+
+	<xsd:group name="msg_recepient_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="ns:xchange_user_id_type"/>
+			<xsd:element name="enc_enc_key" type="xsd:base64Binary"/>
+			<xsd:element name="enc_date" type="xsd:date"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="msg_recepient_type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:group ref="ns:msg_recepient_elements"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="msg_recepients_type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:group ref="ns:msg_recepient_elements" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:group name="xchange_message_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="msg_id" type="ns1:id_type">
+				<xsd:annotation>
+					<xsd:documentation>
+						Each message is identified by the sender's identity and message id.
+
+						Each message id is unique within the sender's id space.
+
+						All tracking of the message to be done using the sender's id and
+						the message id.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="from" type="ns:xchange_user_id_type"/>
+			<xsd:element name="to" type="ns:msg_recepients_type"/>
+			<xsd:element name="msg_body" type="xsd:base64Binary"/>
+			<xsd:element name="subject" type="ns1:description_type" minOccurs="0"/>
+			<xsd:element name="msg_type_name" type="ns1:msg_type_name_type"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="xchange_message_type">
+		<xsd:group ref="ns:xchange_message_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="xchange_messages_type">
+		<xsd:group ref="ns:xchange_message_elements" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:complexType>
+
+	<xsd:element name="xchange_message" type="ns:xchange_message_type"/>
+	<xsd:element name="xchange_messages" type="ns:xchange_messages_type"/>
+
+	<xsd:group name="xchange_meta_message_elements">
+		<xsd:sequence>
+			<xsd:element name="user_id" type="ns:xchange_user_id_type"/>
+			<xsd:element name="cmd" type="ns1:xchange_meta_cmd_type"/>
+			<xsd:element name="buf" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="auth_token" type="xsd:token" minOccurs="0"/>
+			<xsd:element name="msg_id" type="ns1:id_type" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Used in case of ack messages
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="to" type="ns:xchange_user_id_type" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Used in case of ack messages
+					</xsd:documentation>
+				</xsd:annotation>
+		</xsd:element>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="xchange_meta_message_type">
+		<xsd:group ref="ns:xchange_meta_message_elements"/>
+	</xsd:complexType>
+	<xsd:element name="xchange_meta_message" type="ns:xchange_meta_message_type"/>
+
+	<xsd:group name="xchange_notification_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="msg_id" type="ns1:id_type">
+				<xsd:annotation>
+					<xsd:documentation>
+						Same as the message id in the xchange_message
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="from" type="ns:xchange_user_id_type"/>
+			<xsd:element name="sender_contact_email_id" type="ns1:email_id_type" minOccurs="0"/>
+			<xsd:element name="sender_name" type="ns1:user_name_type" minOccurs="0"/>
+			<xsd:element name="to" type="ns:xchange_user_id_type"/>
+			<xsd:element name="addressee_contact_email_id" type="ns1:email_id_type" minOccurs="0"/>
+			<xsd:element name="addressee_name" type="ns1:user_name_type" minOccurs="0"/>
+			<xsd:element name="subject" type="ns1:description_type" minOccurs="0"/>
+			<xsd:element name="enc_enc_key" type="xsd:base64Binary"/>
+			<xsd:element name="enc_date" type="xsd:date"/>
+			<xsd:element name="msg_body" type="xsd:base64Binary"/>
+			<xsd:element name="msg_type_name" type="ns1:msg_type_name_type"/>
+			<xsd:element name="msg_time" type="xsd:dateTime"/>
+		</xsd:sequence>
+	</xsd:group>
+
+
+	<xsd:complexType name="xchange_notification_core_elements_type">
+		<xsd:group ref="ns:xchange_notification_elements"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="xchange_notification_type">
+		<xsd:sequence>
+			<xsd:group ref="ns:xchange_notification_elements"/>
+			<xsd:element name="auth_token" type="xsd:token" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="xchange_notifications_type">
+		<xsd:sequence>
+			<xsd:element name="notifications" type="ns:xchange_notification_core_elements_type" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="auth_token" type="xsd:token" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="xchange_notification" type="ns:xchange_notification_type"/>
+	<xsd:element name="xchange_notifications" type="ns:xchange_notifications_type"/>
+
+	<xsd:group name="xchange_notification_ack_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				THIS IS NOT USED ANYWHERE
+				IT CAN BE DROPPED
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="msg_id" type="ns1:id_type"/>
+			<xsd:element name="from" type="ns:xchange_user_id_type"/>
+			<xsd:element name="auth_token" type="xsd:token" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="xchange_notification_ack_type">
+        <xsd:group ref="ns:xchange_notification_ack_elements" minOccurs="1" maxOccurs="1"/>
+	</xsd:complexType>
+
+	<xsd:element name="xchange_notification_ack" type="ns:xchange_notification_ack_type"/>
+
+    <xsd:complexType name="tax_detail_type">
+        <xsd:group ref="ns:tax_detail_elements" minOccurs="1" maxOccurs="1"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="tax_details_type">
+        <xsd:group ref="ns:tax_detail_elements" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:complexType>
+
+    <xsd:element name="tax_detail" type="ns:tax_detail_type"/>
+    <xsd:element name="tax_details" type="ns:tax_details_type"/>
+
+	 <xsd:group name="company_address_elements">
+        <xsd:annotation>
+            <xsd:documentation>
+                <description></description>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="org_id" type="ns1:org_id_type" minOccurs="0"/>
+            <xsd:element name="address_id" type="ns1:address_id_type" minOccurs="0"/>
+            <xsd:group ref="ns:address_elements"/>
+            <xsd:element name="version" type="xsd:long"/>
+            <xsd:element name="deleted" type="xsd:boolean" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:complexType name="company_address_type">
+        <xsd:group ref="ns:company_address_elements" minOccurs="1" maxOccurs="1"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="company_addresses_type">
+        <xsd:group ref="ns:company_address_elements" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:complexType>
+
+    <xsd:element name="company_address" type="ns:company_address_type"/>
+    <xsd:element name="company_addresses" type="ns:company_addresses_type"/>
+
+	<xsd:group name="order_header_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+
+			<xsd:element name="order_id" type="ns1:order_id_type" minOccurs="0"/>
+			<xsd:element name="order_issue_date" type="xsd:date" />
+			<xsd:element name="order_number" type="ns1:order_num_type"/>
+			<xsd:element name="order_ammendment_date" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="order_version" type="xsd:long" minOccurs="0"/>
+			<xsd:element name="order_contact_user_name" type="ns1:user_name_type"/>
+			<xsd:element name="order_contact_email_id" type="ns1:email_id_type"/>
+			<xsd:element name="order_contact_phone_num" type="ns1:cell_number_type"/>
+			<xsd:element name="order_valid_from_date" type="xsd:date"/>
+			<xsd:element name="order_valid_to_date" type="xsd:date"/>
+			<xsd:element name="buyer_org_id" type="ns1:org_id_type"/>
+			<xsd:element name="seller_org_id" type="ns1:org_id_type"/>
+			<xsd:element name="seller_address_id" type="ns1:address_id_type"/>
+			<xsd:element name="seller_address" type="ns:address_type" minOccurs="0"/>
+			<xsd:element name="seller_contact_user_name" type="ns1:user_name_type"/>
+			<xsd:element name="seller_contact_email_id" type="ns1:email_id_type"/>
+			<xsd:element name="seller_contact_phone_num" type="ns1:cell_number_type"/>         
+			<xsd:element name="billing_address_id" type="ns1:address_id_type"/>
+			<xsd:element name="billing_address" type="ns:address_type" minOccurs="0"/>
+			<xsd:element name="billing_contact_user_name" type="ns1:user_name_type" minOccurs="0"/>
+			<xsd:element name="billing_contact_email_id" type="ns1:email_id_type" minOccurs="0"/>
+			<xsd:element name="billing_contact_phone_num" type="ns1:cell_number_type" minOccurs="0"/>
+			<xsd:element name="delivery_address_id" type="ns1:address_id_type"/>
+			<xsd:element name="delivery_address" type="ns:address_type" minOccurs="0"/>
+			<xsd:element name="delivery_contact_user_name" type="ns1:user_name_type" minOccurs="0"/>
+			<xsd:element name="delivery_contact_email_id" type="ns1:email_id_type" minOccurs="0"/>
+			<xsd:element name="delivery_contact_phone_num" type="ns1:cell_number_type" minOccurs="0"/>
+			<xsd:element name="notes" type="ns1:notes_type" minOccurs="0"/>
+			<xsd:element name="max_order_serial_id" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="currency" type="ns1:ref_code_type"/>
+			<xsd:element name="description" type="ns1:description_type"/>
+			<xsd:element name="version" type="xsd:long" minOccurs="0"/>
+			<xsd:element name="deleted" type="xsd:boolean" minOccurs="0"/>
+			 <xsd:element name="seller_org_name" type="ns1:org_name_type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+    
+  	<xsd:group name="order_line_item_elements">
+		<xsd:annotation>
+			<xsd:documentation>
+				<description></description>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+
+			<xsd:element name="order_id" type="ns1:order_id_type" minOccurs="0"/>
+			<xsd:element name="item_id" type="ns1:item_id_type"/>
+			<xsd:element name="item_description" type="ns1:description_type"/>
+			<xsd:element name="quantity" type="ns1:quantity_type"/>
+			<xsd:element name="rate_per_unit" type="ns1:amount_type"/>
+			<xsd:element name="hsn_code" type="ns1:ref_code_type" minOccurs="0"/>
+			<xsd:element name="unit_of_measure" type="ns1:ref_code_type"/>
+			<xsd:element name="notes" type="ns1:notes_type" minOccurs="0"/>
+			<xsd:element name="partial_delivery_indicator" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="item_delivery_from_date" type="xsd:date"/>
+			<xsd:element name="item_delivery_to_date" type="xsd:date"/>         
+			<xsd:element name="currency" type="ns1:ref_code_type" minOccurs="0"/>
+			<xsd:element name="order_serial_id" type="xsd:int" minOccurs="0" />
+			<xsd:element name="version" type="xsd:long" minOccurs="0"/>
+			<xsd:element name="deleted" type="xsd:boolean" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+    
+	<xsd:complexType name="order_header_type">
+		<xsd:group ref="ns:order_header_elements" minOccurs="1" maxOccurs="1" />
+	</xsd:complexType>
+	
+	<xsd:complexType name="order_headers_type">
+		<xsd:group ref="ns:order_header_elements" minOccurs="0" maxOccurs="unbounded" />
+	</xsd:complexType>
+
+	<xsd:element name="order_header" type="ns:order_header_type"/>
+	<xsd:element name="order_headers" type="ns:order_headers_type"/>
+
+	<xsd:complexType name="order_line_item_type">
+		<xsd:group ref="ns:order_line_item_elements"/>
+	</xsd:complexType>
+	<xsd:element name="order_line_item" type="ns:order_line_item_type"/>
+
+	<xsd:complexType name="order_type">
+		<xsd:sequence>
+			<xsd:element name="order_header" type="ns:order_header_type"/>
+			<xsd:element name="order_line_item" type="ns:order_line_item_type" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="order" type="ns:order_type" />
+
+</xsd:schema>

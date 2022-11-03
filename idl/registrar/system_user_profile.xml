@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="system_user_profile" db_schema_name="'REGISTRAR'" package="biop.registrar">
+	<documentation>
+		Interface to carryout the CRUD (maintenance) operations of a user_profile object
+		For all the update methods, it is expected that the client calls the "fetch"
+		method first and submit the modified user_profile record appropriately.
+	</documentation>
+	<method name="fetch" transactional="false" http_method="GET">
+		<documentation>
+			fetch:
+
+			Inputs:
+				user_principal of the user (mandatory)
+
+			Outputs:
+				user_profile_master object of the given user
+
+			Description:
+				Retrieves a user_profile_master object for the given user 
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the user_profile record does not exist
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="user_principal" mandatory="true"/>
+		<query_param namespace="http://primitives.biop.com" name="user_type"/>
+		<output namespace="http://composites.biop.com" name="user_profile_master"/>
+	</method>
+	<method name="add_daemon" transactional="true" http_method="POST">
+		<documentation>
+			add:
+
+			Inputs:
+				user_profile object of the given user
+
+			Outputs:
+				None
+
+			Description:
+				Adds a new user_profile object to Registrar database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the user_profile record already exists
+		</documentation>
+		<input namespace="http://composites.biop.com" name="user_profile_master"/>
+	</method>
+	<method name="modify_daemon" transactional="true" http_method="PUT">
+		<documentation>
+			modify:
+
+			Inputs:
+				user_profile object of the given user
+
+			Outputs:
+				None
+
+			Description:
+				Update a user_profile object in the Registrar database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the user_profile record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<input namespace="http://composites.biop.com" name="user_profile_master"/>
+	</method>
+	<method name="list" transactional="true" http_method="PUT">
+		<documentation>
+			list:
+
+			Inputs:
+				query_params with one or all of
+				email_id, user_name, deleted
+
+			Outputs:
+				List of user_profile objects matching the given input criteria
+
+			Description:
+				Queries the database and retrives a list of matching user_profile records
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="offset"/>
+		<query_param namespace="http://primitives.biop.com" name="num_recs"/>
+		<query_param namespace="http://primitives.biop.com" name="user_principal"/>
+		<query_param namespace="http://primitives.biop.com" name="user_name"/>
+		<query_param namespace="http://primitives.biop.com" name="contact_email_id"/>
+		<query_param namespace="http://primitives.biop.com" name="system_user_type"/>
+		<query_param namespace="http://primitives.biop.com" name="deleted"/>
+		<output namespace="http://composites.biop.com" name="user_profile_masters"/>
+	</method>
+</ns:interface>

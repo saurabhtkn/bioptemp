@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="license" db_schema_name="'AAA', 'CONFIG'" package="biop.aaa">
+	<documentation>
+		Interface to carryout the maintenance operations of a license object
+		For all the update methods, it is expected that the client calls the "fetch"
+		method first and submit the modified license record appropriately.
+	</documentation>
+	<method name="fetch" transactional="false" http_method="GET">
+		<documentation>
+			fetch:
+
+			Inputs:
+				license_id of the subscriber (mandatory)
+
+			Outputs:
+				license object of the given subscriber license_id
+
+			Description:
+				Retrieves a livense object for the given license_id
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="license_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="license"/>
+	</method>
+	<method name="issue" transactional="true" http_method="POST" db_schema_name="AAA">
+		<documentation>
+			issue:
+
+			Inputs:
+				org_id of the subscriber for which licensed
+				has to be issued.
+
+			Outputs:
+				None
+
+			Description:
+				Adds a new license object to Registrar database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record already exists
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="license"/>
+	</method>
+	<method name="extend" transactional="true" http_method="PUT" db_schema_name="AAA">
+		<documentation>
+			extend:
+
+			Inputs:
+				Existing license record of the subscriber
+
+			Outputs:
+				None
+
+			Description:
+				Adds a new license object to Registrar database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record already exists
+		</documentation>
+		<input namespace="http://composites.biop.com" name="license"/>
+	</method>
+	<method name="retrieve" transactional="false" http_method="GET" db_schema_name="AAA">
+		<documentation>
+			retrieve:
+
+			Inputs:
+				org_id of the subscriber
+
+			Outputs:
+				license record
+
+			Description:
+			Retrieves the license record of the subscriber (identified
+			by org_id) provided one exists
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="license"/>
+	</method>
+	<method name="list" transactional="true" http_method="GET" db_schema_name="AAA">
+		<documentation>
+			list:
+
+			Inputs:
+
+			Outputs:
+				List of active license records
+
+			Description:
+				Lists all active licenses
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="org_id"/>
+		<output namespace="http://composites.biop.com" name="licenses"/>
+	</method>
+</ns:interface>

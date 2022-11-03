@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="control" db_schema_name="'SUBSCRIBER', 'CONFIG'" package="biop.subscriber">
+	<documentation>
+			Interface for a subscriber to erceive messages from the local tuner
+	</documentation>
+	<method name="activate_subscription" transactional="true" db_schema_name="SUBSCRIBER" http_method="POST">
+		<documentation>
+			activate_subscription:
+				Interface to activate the subscription of a subscriber in an instance
+				of the service
+
+			Inputs
+				org_id of the subscriber
+
+			Outputs
+				None
+
+			Description:
+				Creates a subscriber record in the database, with necessary control parameters
+				such as private key of the company, the expiry date of the subscription etc.
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+		<query_param namespace="http://primitives.biop.com" name="override"/>
+		<output namespace="http://composites.biop.com" name="status"/>
+	</method>
+</ns:interface>

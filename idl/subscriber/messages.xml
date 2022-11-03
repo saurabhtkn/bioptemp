@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="messages" db_schema_name="'SUBSCRIBER', 'CONFIG'" package="biop.subscriber">
+	<documentation>
+			Interface for a subscriber to erceive messages from the local tuner
+	</documentation>
+	<method name="new_messages" transactional="true" db_schema_name="SUBSCRIBER" http_method="POST">
+		<documentation>
+			new_messages:
+				An interface to receive a set of messages from the local xchange_client
+
+			Inputs
+				An array containing records with the following salient fields
+				Message body (encrypted byte array), enc_enc_key, msg_id, sender ...
+
+			Outputs
+				status
+
+			Description:
+				Stores the message in the local database and 
+
+				This service is idempotent, i.e. if a message is sent twice, it will not take any action,
+				instead it will report success
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<input namespace="http://composites.biop.com" name="xchange_notifications"/>
+		<output namespace="http://composites.biop.com" name="status"/>
+	</method>
+</ns:interface>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="user_roles_access" db_schema_name="'REGISTRAR'" package="biop.registrar">
+	<documentation>
+		Interface to administer roles of a given user in a company
+	</documentation>
+	<method name="get_user_roles_access" transactional="false" http_method="GET">
+		<documentation>
+			get_user_roles_access:
+
+			Inputs:
+				email_id of the user (mandatory) and org_id of the company
+
+			Outputs:
+				object containg the existing roles for the given email_id, org_id combination
+
+			Description:
+				Retrieves a roles assigned to the user in the given organization
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="email_id" mandatory="true"/>
+		<query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="user_roles"/>
+	</method>
+	<method name="set_user_roles_access" transactional="true" http_method="PUT">
+		<documentation>
+			set_user_roles_access:
+
+			Inputs:
+				object containg the new assignment of roles for the given email_id, org_id combination
+
+			Outputs:
+				None
+
+			Description:
+				Erases the existing role of the user for given email_id, org_id combination and
+				creates fresh access records.
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case of concurrent updates 
+				It is expected the the caller retreives the object using the get_user_roles_access
+				method and updates the same object for newly assigned roles and submits it.
+		</documentation>
+		<input namespace="http://composites.biop.com" name="user_roles"/>
+	</method>
+</ns:interface>

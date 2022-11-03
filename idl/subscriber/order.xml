@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="order" db_schema_name="'SUBSCRIBER'" package="biop.subscriber">
+	<documentation>
+		Interface to carryout the CRUD (maintenance) operations of a order object
+		For all the update methods, it is expected that the client calls the "fetch"
+		method first and submit the modified order record appropriately.
+	</documentation>
+	<method name="fetch" transactional="false" http_method="GET">
+		<documentation>
+			fetch:
+
+			Inputs:
+				order_id of the order (mandatory)
+
+			Outputs:
+				order object of the given order number
+
+			Description:
+				Retrieves a order object for the given order_id
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the order record does not exist
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="order_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="order"/>
+	</method>
+	<method name="add" transactional="true" http_method="POST">
+		<documentation>
+			add:
+
+			Inputs:
+				order object of the given user
+
+			Outputs:
+				None
+
+			Description:
+				Adds a new order object to Subscriber database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the order record already exists
+		</documentation>
+		<input namespace="http://composites.biop.com" name="order"/>
+	</method>
+	<method name="modify" transactional="true" http_method="PUT">
+		<documentation>
+			modify:
+
+			Inputs:
+				order object of the given order_id
+
+			Outputs:
+				None
+
+			Description:
+				Update a purcahse order object in the Subscriber database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the order record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<input namespace="http://composites.biop.com" name="order"/>
+	</method>
+	<method name="delete" transactional="true" http_method="PUT">
+		<documentation>
+			delete:
+
+			Inputs:
+				order object of the given order_id
+
+			Outputs:
+				None
+
+			Description:
+				Marks a order object in the Subscriber database as deleted
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the order record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<input namespace="http://composites.biop.com" name="order_header"/>
+	</method>
+	<method name="undelete" transactional="true" http_method="PUT">
+		<documentation>
+			undelete:
+
+			Inputs:
+				order object of the given order_id
+
+			Outputs:
+				None
+
+			Description:
+				Marks a order object in the Subscriber database as not deleted
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the order record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<input namespace="http://composites.biop.com" name="order"/>
+	</method>
+	<method name="list" transactional="true" http_method="GET">
+		<documentation>
+			list:
+
+			Inputs:
+				query_params with one or all of
+				buyer_org_id, seller_org_id, order_issue_date, order_created_user_name, order_valid_from_date, order_valid_to_date
+
+			Outputs:
+				List of order objects matching the given input criteria
+
+			Description:
+				Queries the database and retrives a list of matching order records
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="offset"/>
+		<query_param namespace="http://primitives.biop.com" name="num_recs"/>
+		<query_param namespace="http://primitives.biop.com" name="buyer_org_id"/>
+		<query_param namespace="http://primitives.biop.com" name="seller_org_id"/>
+		<query_param namespace="http://primitives.biop.com" name="order_issue_date"/>
+		<query_param namespace="http://primitives.biop.com" name="order_contact_user_name"/>
+		<query_param namespace="http://primitives.biop.com" name="order_valid_from_date"/>
+		<query_param namespace="http://primitives.biop.com" name="order_valid_to_date"/>
+		<query_param namespace="http://primitives.biop.com" name="deleted"/>
+		<output namespace="http://composites.biop.com" name="order_headers"/>
+	</method>
+</ns:interface>

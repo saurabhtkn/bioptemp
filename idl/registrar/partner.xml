@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+                name="partner" db_schema_name="'REGISTRAR'" package="biop.registrar">
+    <documentation>
+        Interface to carryout the CRUD (maintenance) operations of a partner object
+        For all the update methods, it is expected that the client calls the "fetch"
+        method first and submit the modified partner record appropriately.
+	</documentation>
+    <method name="notify" transactional="false" http_method="GET">
+        <documentation>
+            notify:
+
+            Inputs:
+                org_id: org_id for which a notification has to be sent
+
+            Outputs:
+                None
+
+            Description:
+                Generates a notification on the topic
+        </documentation>
+        <query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+    </method>
+    <method name="fetch" transactional="false" http_method="GET">
+        <documentation>
+            fetch:
+
+            Inputs:
+                org_id or parent_org_id (mandatory)
+
+            Outputs:
+                partner object 
+
+            Description:
+                Retrieves a partner object for given org_id or parent_org_id.
+        </documentation>
+        <query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+        <query_param namespace="http://primitives.biop.com" name="parent_org_id" mandatory="true"/>
+        <output namespace="http://composites.biop.com" name="partner"/>
+    </method>
+    <method name="add" transactional="true" http_method="POST">
+        <documentation>
+            add:
+
+            Inputs:
+                partner object
+
+            Outputs:
+                None
+
+            Description:
+                Adds a new partner object to Registrar database
+        </documentation>
+        <input namespace="http://composites.biop.com" name="partner"/>
+    </method>
+    <method name="modify" transactional="true" http_method="PUT">
+        <documentation>
+            modify:
+
+            Inputs:
+                partner object
+
+            Outputs:
+                None
+
+            Description:
+                Update a partner object in the Registrar database
+        </documentation>
+        <input namespace="http://composites.biop.com" name="partner"/>
+    </method>
+    <method name="delete" transactional="true" http_method="PUT">
+        <documentation>
+            delete:
+
+            Inputs:
+                partner object
+
+            Outputs:
+                None
+
+            Description:
+                Marks a partner object in the Registrar database as deleted
+        </documentation>
+        <input namespace="http://composites.biop.com" name="partner"/>
+    </method>
+    <method name="undelete" transactional="true" http_method="PUT">
+        <documentation>
+            undelete:
+
+            Inputs:
+                partner object
+
+            Outputs:
+                None
+
+            Description:
+                Marks a partner object in the Registrar database as not deleted
+        </documentation>
+        <input namespace="http://composites.biop.com" name="partner"/>
+    </method>
+    <method name="list" transactional="true" http_method="GET">
+        <documentation>
+            list:
+
+            Inputs:
+                query_params with one or all of
+                parent_org_id, org_id and partner_type
+
+            Outputs:
+                List of partners matching the criteria
+
+            Description:
+                Queries the database and retrives a list of matching partner records
+
+            Errors:
+                Throws errors in case of invalid or missing inputs
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="offset"/>
+        <query_param namespace="http://primitives.biop.com" name="num_recs"/>
+        <query_param namespace="http://primitives.biop.com" name="parent_org_id" mandatory="true"/>
+        <query_param namespace="http://primitives.biop.com" name="org_id"/>
+        <query_param namespace="http://primitives.biop.com" name="partner_relationship_type"/>
+        <query_param namespace="http://primitives.biop.com" name="org_name"/>
+        <output namespace="http://composites.biop.com" name="partners"/>
+    </method>
+    <method name="org_list" transactional="true" http_method="GET">
+        <documentation>
+            org_list:
+
+            Inputs:
+                query_params with one or all of
+                org_name, city_name, parent_org_id
+
+            Outputs:
+				List of comapny objects that are not partners of the parent_org_id and
+				matching the given input criteria
+
+            Description:
+                Queries the database and retrives a list of matching company records
+
+            Errors:
+                Throws errors in case of invalid or missing inputs
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="offset"/>
+        <query_param namespace="http://primitives.biop.com" name="num_recs"/>
+        <query_param namespace="http://primitives.biop.com" name="org_name"/>
+        <query_param namespace="http://primitives.biop.com" name="city_name"/>
+        <query_param namespace="http://primitives.biop.com" name="parent_org_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="companies"/>
+    </method>
+</ns:interface>
+

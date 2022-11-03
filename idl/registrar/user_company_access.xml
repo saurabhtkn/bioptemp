@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+                name="user_company_access" db_schema_name="'REGISTRAR'" package="biop.registrar">
+    <documentation>
+        Interface to carryout the CRUD (maintenance) operations of a uca object
+	</documentation>
+	<method name="fetch" transactional="false" http_method="GET">
+        <documentation>
+            fetch:
+
+            Inputs:
+                email_id and org_id (mandatory)
+
+            Outputs:
+                user_company_relation object
+
+            Description:
+                Retrieves a uca object for given email_id or org_id.
+        </documentation>
+        <query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+        <query_param namespace="http://primitives.biop.com" name="email_id" mandatory="true"/>
+        <output namespace="http://composites.biop.com" name="user_company_relation"/>
+    </method>
+	<method name="delete" transactional="true" http_method="PUT">
+        <documentation>
+            delete:
+
+            Inputs:
+                user_company_access object
+
+            Outputs:
+                None
+
+            Description:
+                Marks a user_company_access object in the Registrar database as deleted
+        </documentation>
+        <input namespace="http://composites.biop.com" name="user_company_relation"/>
+    </method>
+	<method name="undelete" transactional="true" http_method="PUT">
+        <documentation>
+            delete:
+
+            Inputs:
+                user_company_access object
+
+            Outputs:
+                None
+
+            Description:
+                Marks a user_company_access object in the Registrar database as undeleted
+        </documentation>
+        <input namespace="http://composites.biop.com" name="user_company_relation"/>
+    </method>
+    <method name="list" transactional="true" http_method="GET">
+	    <documentation>
+		    get_user_company_access
+
+		    Inputs:
+			email_id of a user 
+
+		    Outputs:
+		    List of the companies matching the criteria	
+
+		    Description:
+			Queries the database and retrives a list of matching companies records
+
+		    Errors:
+			Throws errors in case of invalid or missing inputs
+	    </documentation>
+		<query_param namespace="http://primitives.biop.com" name="offset"/>
+	    <query_param namespace="http://primitives.biop.com" name="num_recs"/>
+	    <query_param namespace="http://primitives.biop.com" name="email_id" mandatory="true"/>
+        <output namespace="http://composites.biop.com" name="user_company_relations_with_email"/>
+    </method>
+		<method name="list_unlinked" transactional="true" http_method="GET">
+        <documentation>
+            get_user_company_access_denied
+
+            Inputs:
+            email_id of a user
+
+            Outputs:
+            List of the companies matching the criteria
+
+            Description:
+            Queries the database and retrives a list of matching companies records
+
+            Errors:
+            Throws errors in case of invalid or missing inputs
+        </documentation>
+        <query_param namespace="http://primitives.biop.com" name="offset"/>
+        <query_param namespace="http://primitives.biop.com" name="num_recs"/>
+        <query_param namespace="http://primitives.biop.com" name="email_id" mandatory="true"/>
+        <output namespace="http://composites.biop.com" name="user_related_companies_details"/>
+    </method>
+	<method name="add" transactional="true" http_method="PUT">
+        <documentation>
+            set_user_company_access
+
+            Inputs:
+            user_email and company org_id object
+
+            Outputs:
+
+            Description:
+            Adds user company relation to the table 
+
+            Errors:
+            Throws errors in case of invalid or missing inputs
+        </documentation>
+        <input namespace="http://composites.biop.com" name="user_company_relation"/>
+    </method>
+</ns:interface>
+

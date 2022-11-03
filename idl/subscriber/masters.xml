@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+                name="masters" db_schema_name="'SUBSCRIBER'" package="biop.subscriber">
+    <documentation>
+        Interface to fetch lists from masters table.
+    </documentation>
+		
+		 <method name="partnerlist" transactional="true" http_method="GET">
+        <documentation>
+            list:
+
+            Inputs:
+                query_params with one or all of
+                parent_org_id, org_ name and partner_type
+
+            Outputs:
+                List of partners matching the criteria
+
+            Description:
+                Queries the database and retrives a list of matching partner records
+
+            Errors:
+                Throws errors in case of invalid or missing inputs
+        </documentation>
+        <query_param namespace="http://primitives.biop.com" name="parent_org_id" mandatory="true"/>
+        <query_param namespace="http://primitives.biop.com" name="org_id"/>
+        <query_param namespace="http://primitives.biop.com" name="partner_relationship_type"/>
+        <query_param namespace="http://primitives.biop.com" name="org_name"/>
+        <output namespace="http://composites.biop.com" name="partners"/>
+    </method>
+
+
+		 <method name="addresslist" transactional="true" http_method="GET">
+        <documentation>
+            list:
+
+            Inputs:
+                 query_params with one or all of
+                org_id, address_line
+
+            Outputs:
+				List of comapny_address objects matching the given input criteria
+
+            Description:
+                Queries the database and retrives a list of matching address records
+
+            Errors:
+                Throws errors in case of invalid or missing inputs
+        </documentation>
+        <query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+        <query_param namespace="http://primitives.biop.com" name="address_line"/>
+        <query_param namespace="http://primitives.biop.com" name="deleted"/>
+        <output namespace="http://composites.biop.com" name="company_addresses"/>
+    </method>
+
+</ns:interface>
+

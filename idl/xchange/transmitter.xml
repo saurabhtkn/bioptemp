@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="transmitter" db_schema_name="'XCHANGE', 'CONFIG'" package="xchg.xchange">
+	<documentation>
+			Internal Interface of the xchange module
+	</documentation>
+	<method name="new_notification" transactional="true" db_schema_name="XCHANGE" http_method="POST">
+		<documentation>
+			new_message:
+				Internal interface for sending a nofification to a subscriber, who is connected
+				on the instance of the service
+
+			Inputs
+				Notification body , subscriber to whom the message has to be sent,
+				decryption key
+
+			Outputs
+				status
+
+			Description:
+				Validates the input data for
+				schematic correctness and tries to send the message
+				
+				Once the send is successful, increments the trial count and marks the message as sent
+				If the send was not scuccessful, just increments the trial count
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<input namespace="http://composites.biop.com" name="xchange_notification"/>
+		<output namespace="http://composites.biop.com" name="status"/>
+	</method>
+</ns:interface>

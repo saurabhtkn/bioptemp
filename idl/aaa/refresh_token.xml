@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="refresh_token" db_schema_name="'AAA', 'CONFIG'" package="biop.aaa">
+	<documentation>
+			Interface for generationg refresh_token of a SYSTEM user (e.g. a company)
+	</documentation>
+	<method name="issue_refresh_token" transactional="true" db_schema_name="AAA" http_method="POST">
+		<documentation>
+			login:
+			Inputs
+				credentials : USER_PRINCIPAL, USER_TYPE  and OTP
+			Outputs
+				refresh_token: containing the signed JWT token
+
+			Description:
+				Checks the validity of org_id, for validity of license and OTP and creates a session record for
+				the issuance of refresh_token.
+				Returns the token using which, the client will be able to generate access_token, with which the
+				client can access APIs
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<input namespace="http://composites.biop.com" name="system_user_credentials"/>
+		<output namespace="http://composites.biop.com" name="refresh_token"/>
+	</method>
+	<method name="authenticate_system_user" transactional="true" db_schema_name="AAA" http_method="GET">
+		<documentation>
+			login:
+			Inputs
+				user_principal, user_type
+			Outputs
+				user_session object containing session_id
+
+			Description:
+				Checks the validity of user_principal and user_type, generates an OTP and
+				sends the OTP to the contact email id of the system user
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="user_principal"/>
+		<output namespace="http://composites.biop.com" name="user_session"/>
+	</method>
+</ns:interface>

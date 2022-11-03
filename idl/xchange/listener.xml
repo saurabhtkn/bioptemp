@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="listener" db_schema_name="'XCHANGE', 'CONFIG'" package="xchg.xchange">
+	<documentation>
+			Interface for a subscriber to exchange messages with other subscriber
+	</documentation>
+	<method name="new_message" transactional="true" db_schema_name="XCHANGE" http_method="POST">
+		<documentation>
+			new_message:
+				An interface to send (multi-cast) message from one subscriber to a set
+				of subscribers
+
+			Inputs
+				Message body (encrypted byte array), subscribers to whom the message has to be sent,
+				decryption keys
+
+			Outputs
+				status
+
+			Description:
+				Validates the input data for
+				1. Valid token of the calling subscriber
+				2. Validity of the subcriber ids, to whom the message is addressed
+				3. Presence of keys for each subcriber
+				
+				Stores the message for send and initiates the process of triggering alerts
+				to approriate receiving subscriber process(es)
+
+				This service is idempotent, i.e. if a message is sent twice, it will not take any action,
+				instead it will report success
+
+			Errors:
+				If any of the input data fields are incorrectly passed or not passed, appropriate error is raised
+				If refresh_token fails the user is not logged in and appropriate error is thrown
+		</documentation>
+		<input namespace="http://composites.biop.com" name="xchange_message"/>
+		<output namespace="http://composites.biop.com" name="status"/>
+	</method>
+</ns:interface>

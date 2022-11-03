@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="company" db_schema_name="'REGISTRAR', 'CONFIG'" package="biop.registrar">
+	<documentation>
+		Interface to carryout the CRUD (maintenance) operations of a company object
+		For all the update methods, it is expected that the client calls the "fetch"
+		method first and submit the modified company record appropriately.
+	</documentation>
+	<method name="public_key_fetch" transactional="false" http_method="GET">
+		<documentation>
+			public_key_fetch:
+				Function to fetch public key related details of the company
+				
+			Inputs:
+				org_id in query_params
+				time time for which the relevant public key will be fetched
+
+			Outputs:
+				Company activation details
+
+			Description:
+				Fetches the company table company_public_key_dtls table
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+		<query_param namespace="http://primitives.biop.com" name="date" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="subscriber_activation_dtls"/>
+	</method>
+	<method name="get_activation_dtls" transactional="false" http_method="GET">
+		<documentation>
+			get_activation_dtls:
+				Function to fetch public key related details of the company
+				
+			Inputs:
+				org_id in query_params
+
+			Outputs:
+				Company activation details
+
+			Description:
+				Fetches the company table setting the 
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="subscriber_activation_dtls"/>
+	</method>
+	<method name="activate_subscriber" transactional="true" db_schema_name="REGISTRAR" http_method="PUT">
+		<documentation>
+			set_public_key:
+				Function to activate the company(subscriber) to be part of
+				the BIOP network.
+				
+				The public key generated for the company is registered against
+				the org_id for a period of 1 year.
+
+			Inputs:
+				subscriber_activation_dtls containing org_id public key and version.
+
+			Outputs:
+				None
+
+			Description:
+				Updates the company table setting the 
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+		</documentation>
+		<input namespace="http://composites.biop.com" name="subscriber_activation_req"/>
+		<output namespace="http://composites.biop.com" name="subscriber_activation_dtls"/>
+	</method>
+	<method name="fetch" transactional="false" http_method="GET">
+		<documentation>
+			fetch:
+
+			Inputs:
+				org_id of the company (mandatory)
+
+			Outputs:
+				company object of the given company
+
+			Description:
+				Retrieves a company object for the given org_id
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="org_id" mandatory="true"/>
+		<output namespace="http://composites.biop.com" name="company"/>
+	</method>
+	<method name="add" transactional="true" db_schema_name="REGISTRAR" http_method="POST">
+		<documentation>
+			add:
+
+			Inputs:
+				company object of the given user
+
+			Outputs:
+				None
+
+			Description:
+				Adds a new company object to Registrar database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record already exists
+		</documentation>
+		<input namespace="http://composites.biop.com" name="company"/>
+	</method>
+	<method name="modify" transactional="true" db_schema_name="REGISTRAR"  http_method="PUT">
+		<documentation>
+			modify:
+
+			Inputs:
+				company object of the given org_id
+
+			Outputs:
+				None
+
+			Description:
+				Update a company object in the Registrar database
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<input namespace="http://composites.biop.com" name="company"/>
+	</method>
+	<method name="delete" transactional="true" db_schema_name="REGISTRAR"  http_method="PUT">
+		<documentation>
+			delete:
+
+			Inputs:
+				company object of the given org_id
+
+			Outputs:
+				None
+
+			Description:
+				Marks a company object in the Registrar database as deleted
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<input namespace="http://composites.biop.com" name="company"/>
+	</method>
+	<method name="undelete" transactional="true" db_schema_name="REGISTRAR"  http_method="PUT">
+		<documentation>
+			undelete:
+
+			Inputs:
+				company object of the given org_id
+
+			Outputs:
+				None
+
+			Description:
+				Marks a company object in the Registrar database as not deleted
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+				Throws errors in case the company record does not exist
+				Throws error in case of concurrent writes on the same object
+		</documentation>
+		<input namespace="http://composites.biop.com" name="company"/>
+	</method>
+	<method name="list" transactional="true" db_schema_name="REGISTRAR"  http_method="GET">
+		<documentation>
+			list:
+
+			Inputs:
+				query_params with one or all of
+				org_id, org_name, deleted
+
+			Outputs:
+				List of comapny objects matching the given input criteria
+
+			Description:
+				Queries the database and retrives a list of matching comapny records
+
+			Errors:
+				Throws errors in case of invalid or missing inputs
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="offset"/>
+		<query_param namespace="http://primitives.biop.com" name="num_recs"/>
+		<query_param namespace="http://primitives.biop.com" name="org_id"/>
+		<query_param namespace="http://primitives.biop.com" name="org_name"/>
+		<query_param namespace="http://primitives.biop.com" name="deleted"/>
+		<query_param namespace="http://primitives.biop.com" name="is_subscriber"/>
+		<output namespace="http://composites.biop.com" name="companies"/>
+	</method>
+</ns:interface>

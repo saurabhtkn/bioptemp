@@ -1,0 +1,13 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://xchange_messages.biop.com" xmlns:ns="http://xchange_messages.biop.com" xmlns:ns1="http://primitives.biop.com">
+
+	<xsd:import namespace="http://primitives.biop.com" schemaLocation="primitive_data_structures.xsd"/>
+
+	<xsd:complexType name="test_message_type">
+		<xsd:sequence>
+			<xsd:element name="greeting" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="test_message" type="ns:test_message_type"/>
+
+</xsd:schema>

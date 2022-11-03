@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:interface xmlns:ns="http://evpoco.tekenlight.org/idl_spec"
+				name="individual_pw" db_schema_name="'AAA', 'CONFIG'" package="biop.aaa">
+	<documentation>
+		Utilities related to password management
+	</documentation>
+	<method name="gen" transactional="true" db_schema_name="AAA" http_method="PUT">
+		<documentation>
+			gen:
+
+			Inputs:
+				email_id of the user
+			Outputs:
+				None
+			Description:
+				Validates if the given email_id is that of an active user and
+				generates a random password for the same. The password is then saved
+				to the database after adding salt (email_id) to the password and generating
+				a SHA256 hash of the same.
+
+			Errors:
+				Returns error if passed input is incorrect
+				Can fail if two different concurrent attempts to generate the password for
+				the same user are being done.
+		</documentation>
+		<query_param namespace="http://primitives.biop.com" name="email_id" mandatory="true"/>
+	</method>
+	<method name="validate" transactional="true" db_schema_name="AAA" http_method="GET">
+		<documentation>
+			validate:
+
+			Inputs:
+				Credentials of the user, email_id and password
+			Outputs:
+				status object containing boolean result of operation true - SUCCESS false - FAILURE
+			Description:
+				Checks if the password is valid against the persisted SHA256 hash of the user password
+				Generates the SHA256 hash after adding salt to the password and compares the same with
+				the persisted password
+
+			Errors:
+				Returns error if passed input is incorrect
+		</documentation>
+		<input namespace="http://composites.biop.com" name="credentials"/>
+		<output namespace="http://primitives.biop.com" name="status"/>
+	</method>
+</ns:interface>
